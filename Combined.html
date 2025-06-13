@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      background: transparent;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      font-size: 48px;
+      color: white;
+      text-align: center;
+    }
+  </style>
+</head>
+<body id="display">Loading...</body>
+<script>
+  async function fetchTotal() {
+    const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTUeHcMDqBVGnWX2YEdCHZIviQN5jkmHCnunOR3dpIVU5LjnxxIygIj6gHYffOR6ZSxAoFCwUm_Mcr1/pub?gid=0&single=true&output=csv";
+    try {
+      const res = await fetch(url);
+      const text = await res.text();
+      const lines = text.trim().split("\n");
+      const totalLine = lines[3];
+      const [, total] = totalLine.split(",");
+      document.getElementById("display").textContent = total;
+    } catch {
+      document.getElementById("display").textContent = "Error";
+    }
+  }
+  fetchTotal();
+  setInterval(fetchTotal, 30000);
+</script>
+</html>
